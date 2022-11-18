@@ -1,13 +1,13 @@
 import { login, logout } from "./src/services/sessions-service.js";
 
-const crendentials = {
+const credentials = {
 	email: "seb.terleira1204@mail.com",
 	password: "123456",
 };
 
 async function test() {
 	try {
-		const user = await login(crendentials);
+		const user = await login(credentials);
 		console.log(user);
 		
 		const data = await logout(); 
