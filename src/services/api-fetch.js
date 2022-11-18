@@ -43,6 +43,3 @@ export default async function apiFetch(endpoint,  { method, headers, body } = {}
 
 	return data;
 }
-
-// sessionStorage.setItem(tokenKey, "test-token");
-// apiFetch("login", { body: { username: "adasdas" } });
