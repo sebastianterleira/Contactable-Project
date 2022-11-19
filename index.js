@@ -3,13 +3,15 @@ import LoginPage from "./src/pages/login-page.js";
 import HomePage from "./src/pages/home-page.js";
 import { tokenKey } from "./src/config.js";
 import { getContacts } from "./src/services/contacts-service.js";
+import { login } from "./src/services/sessions-service.js";
 
 async function init() {
 	try {
 		const token = sessionStorage.getItem(tokenKey);
-		if (!token) return DOMHandler.load(LoginPage);
+		if (!token) throw new Error();
 	
 		const user = await getContacts();
+		console.log(user);
 		DOMHandler.load(HomePage);
 	} catch (error) {
 		sessionStorage.removeItem(tokenKey);
@@ -17,8 +19,12 @@ async function init() {
 	}
 }
 
-sessionStorage.setItem(tokenKey, "LC74Fb2BM9CAqUvRu4fzxGou");
 init()
+
+// login({
+// 	"email": "seb.terleira1204@mail.com",
+// 	"password": "1234567"
+// }).then(() => init())
 
 
 
