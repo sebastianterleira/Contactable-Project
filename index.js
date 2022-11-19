@@ -1,17 +1,23 @@
 import DOMHandler from "./src/dom-handler.js";
 import LoginPage from "./src/pages/login-page.js";
+import HomePage from "./src/pages/home-page.js";
 import { tokenKey } from "./src/config.js";
-import { getContacts } from "./src/services/contacts-service.js"
+import { getContacts } from "./src/services/contacts-service.js";
 
 async function init() {
-	const token = sessionStorage.getItem(tokenKey);
-	if (!token) return DOMHandler.load(LoginPage);
-
-	const user = await getContacts();
-	console.log(user);
+	try {
+		const token = sessionStorage.getItem(tokenKey);
+		if (!token) return DOMHandler.load(LoginPage);
+	
+		const user = await getContacts();
+		DOMHandler.load(HomePage);
+	} catch (error) {
+		sessionStorage.removeItem(tokenKey);
+		DOMHandler.load(LoginPage);
+	}
 }
 
-sessionStorage.setItem(tokenKey, "BQwWAVZAbzXkfoPXN2c2cnB4");
+sessionStorage.setItem(tokenKey, "LC74Fb2BM9CAqUvRu4fzxGou");
 init()
 
 
