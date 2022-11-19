@@ -5,7 +5,6 @@ import { tokenKey } from "../config.js";
 export async function login(credentials = { email, password }) {
 	const { token, ...user } = await apiFetch("login", { body: credentials });
 	sessionStorage.setItem(tokenKey, token);
-	console.log(token);
 
 	return user;
 }

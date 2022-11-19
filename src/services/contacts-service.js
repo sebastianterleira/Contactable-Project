@@ -13,3 +13,14 @@ export async function createContacts(
 export async function deleteContact(id) {
 	return await apiFetch(`contacts/${id}`, { method: "DELETE" });
 }
+
+export async function editContact(
+	data = { name, number, email, relation, favorite: false }, id
+  ) {
+	const { token, ...user } = await apiFetch(`contacts/${id}`, {
+	method: "PATCH",
+	body: data,
+	});
+  
+	return user;
+  }
