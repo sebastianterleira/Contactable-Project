@@ -1,5 +1,6 @@
 import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
+import HomePage from "./home-page.js";
 import { input } from "../components/input.js";
 import { select } from "../components/select.js";
 import { createContacts } from "../services/contacts-service.js";
@@ -63,8 +64,8 @@ function listenSubmit() {
     };
 
     try{
-      const response = await createContacts(data)
-      console.log(response);
+      await createContacts(data)
+      DOMHandler.load(HomePage);
     }catch(error){
       NewContact.state.formError = JSON.parse(error.message);
       DOMHandler.reload();
