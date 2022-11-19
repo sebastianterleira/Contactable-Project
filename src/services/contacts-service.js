@@ -17,10 +17,11 @@ export async function deleteContact(id) {
 export async function editContact(
 	data = { name, number, email, relation, favorite: false }, id
   ) {
+		console.log(data, id)
 	const { token, ...user } = await apiFetch(`contacts/${id}`, {
 	method: "PATCH",
 	body: data,
 	});
   
 	return user;
-  }
+}
