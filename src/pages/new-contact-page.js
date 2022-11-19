@@ -38,7 +38,8 @@ function render() {
       ${formError.email ? `<p class="error-300">${formError.email.join(", ")}</p>` : ""}
       ${select({
         id:"relation",
-        name: relation
+        name: relation,
+        selected: relation
       })}
       
     
@@ -55,6 +56,8 @@ function listenSubmit() {
   save.addEventListener("click", async (event) => {
 
     const { name, number, email, relation } = event.target.parentNode
+
+    console.dir(relation.value);
     
     const data = {
       name: name.value,
