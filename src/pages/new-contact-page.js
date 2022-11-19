@@ -3,10 +3,10 @@ import DOMHandler from "../dom-handler.js";
 import HomePage from "./home-page.js";
 import { input } from "../components/input.js";
 import { select } from "../components/select.js";
-import { createContacts } from "../services/contacts-service.js";
+import { createContacts, editContact } from "../services/contacts-service.js";
 
 function render() {
-  const { name, number, email, relation } = STORE.contacts;
+  const { name, number, email, relation } = STORE.edit;
   const { formError } = NewContact.state;
 
   return `
@@ -64,7 +64,11 @@ function listenSubmit() {
     };
 
     try{
-      await createContacts(data)
+      if(STORE.edit){
+        await editContact(data, STORE.edit.id)
+      }else{
+        await createContacts(data)
+      }
       DOMHandler.load(HomePage);
     }catch(error){
       NewContact.state.formError = JSON.parse(error.message);
