@@ -1,11 +1,9 @@
 export function input({
-	label,
-	id,
-	name,
-	placeholder = "",
-	type,
-	required = false,
-	value = false,
+  name,
+  placeholder = "",
+  type,
+  required = false,
+  value = false,
 }) {
   return `
 	<div class="input">

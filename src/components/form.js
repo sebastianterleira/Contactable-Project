@@ -1,39 +1,33 @@
-import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
 import { input } from "./input.js";
-import { updateUser } from "../services/user-service.js";
 
 function render() {
   console.log(STORE);
-  const { email, first_name, last_name, phone } = STORE.user;
+  const { name, number, email, relation } = STORE.user;
   const { formError } = Profile.state;
 
   return `
     <form class="flex flex-column gap-4 mb-4 js-profile-form">
       ${input({
-        label: "Name",
-        id: "first_name",
-        value: first_name,
-        name: "first_name",
+        placeholder: "Name",
+        required: true,
+        value: name,
+        name: "name",
       })}
       ${input({
-        label: "First Name",
-        id: "first_name",
-        value: first_name,
-        name: "first_name",
+
+        placeholder: "Number",
+        value: number,
+        name: "number",
       })}
       ${input({
-        label: "email",
-        id: "email",
-        placeholder: "john@example.com",
+        placeholder: "Email",
         type: "email",
         required: true,
         value: email,
         name: "email",
       })}
       ${input({
-        label: "Phone",
-        id: "phone",
         value: phone,
         name: "phone",
       })}
