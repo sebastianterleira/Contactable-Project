@@ -1,10 +1,12 @@
+import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
 import { input } from "./input.js";
+import { select } from "./select.js";
+import { editContact } from "../services/contacts-service.js";
 
 function render() {
-  console.log(STORE);
   const { name, number, email, relation } = STORE.user;
-  const { formError } = Profile.state;
+  const { formError } = FORM.state;
 
   return `
     <form class="flex flex-column gap-4 mb-4 js-profile-form">
@@ -27,14 +29,14 @@ function render() {
         value: email,
         name: "email",
       })}
-      ${input({
-        value: phone,
-        name: "phone",
+      ${select({
+        name: relation
       })}
       
       ${formError ? `<p class="text-center error-300">${formError}</p>` : ""}
-      <button type="submit" class="button button--primary">Update</button>
-    </form>
+      <a class = "js-cancel-contact" href = "#">Cancel</a>
+      <a class = "js-save-contact" href = "#">Save</a>
+      </form>
   `;
 }
 
@@ -48,25 +50,25 @@ function listenSubmit() {
 
     const data = {
       email: email.value,
-      first_name: first_name.value,
+      name: name.value,
       last_name: last_name.value,
       phone: phone.value,
     };
 
     try {
-      const user = await updateUser(data);
+      const user = await editContact(data);
 
       STORE.user = user;
       STORE.currentTab = "expense";
       DOMHandler.reload();
     } catch (error) {
-      Profile.state.formError = error.message;
+      Form.state.formError = error.message;
       DOMHandler.reload();
     }
   });
 }
 
-const Profile = {
+const Form = {
   toString() {
     return render();
   },
@@ -78,4 +80,4 @@ const Profile = {
   },
 };
 
-export default Profile;
+export default Form;

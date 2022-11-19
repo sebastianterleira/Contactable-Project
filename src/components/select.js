@@ -1,21 +1,21 @@
-export function input({
+export function select({
+  id,
   name,
-  placeholder = "",
-  type,
   required = false,
-  value = false,
 }) {
   return `
-    <div class="input">
-      <div class="input__container">
-        <input
-          type="${type ? type : "text"}"
-          placeholder="${placeholder}"
-          class="input__content"
+    <div class="select">
+      <div class="select__container">
+        <select
           name="${name}"
-          ${value ? `value="${value}"` : ""}
-          ${required ? "required" : ""}
+          id="${id}"
+          class="select__content"
         >
+          <option value="Family" selected>Family</option>
+          <option value="Friend">Friend</option>
+          <option value="Work">Work</option>
+          <option value="Aquaintance">Aquaintance</option>
+        </select>
       </div>
     </div>
   `;

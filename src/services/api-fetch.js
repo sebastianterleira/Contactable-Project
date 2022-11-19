@@ -30,9 +30,9 @@ export default async function apiFetch(endpoint,  { method, headers, body } = {}
 		try {
 			data = await response.json();
 		} catch (error) {
-		throw new Error(response.statusText);
+			throw new Error(response.statusText);
 		}
-	throw new Error(data.errors);
+		throw new Error(JSON.stringify(data));
 	}
 
 	try {
