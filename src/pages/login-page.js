@@ -1,9 +1,11 @@
 import DOMHandler from "../dom-handler.js";
 import HomePage from "./home-page.js";
+import STORE from "../store.js";
 import { input } from "../components/input.js";
 import { login } from "../services/sessions-service.js";
 
 function render() {
+	const {  loginError } = this.state;
     return `
     <main class="section">
       <section class="container">
@@ -30,7 +32,11 @@ function render() {
 					value: "123456",
 				})}
 					
-					<p class="text-center error-300">Error!!</p>
+				${
+					loginError 
+					? `<p class="text-center error-300">${loginError}</p>`
+					: ""
+				}
 					<button class="button button--primary">Login</button>
         </form>
         <a href="#" class="block text-center js-signup-link">Create account</a>
@@ -39,7 +45,7 @@ function render() {
     `;
 }
 
-function ListenSubmit() {
+function ListenSubmitForm() {
 	const form = document.querySelector(".js-login-form");
 
 	form.addEventListener("submit", async (event) => {
@@ -52,22 +58,29 @@ function ListenSubmit() {
 				email: email.value,
 				password: password.value
 			};
+
+			
 	
 			const user = await login(credentials)
-			DOMHandler(HomePage)
+			STORE.user = user;
+			DOMHandler.load(HomePage);
 		} catch (error) {
-			
+			this.state.loginError = error.message;
+			DOMHandler.reload();
 		}
 	});
 }
 
 const LoginPage = {
     toString() {
-        return render();
+        return render.call(this);
     },
     addListeners() {
-			ListenSubmit();
+			ListenSubmitForm.call(this);
 		},
+	state: {
+		loginError: null,
+	}
 };
 
 export default LoginPage;
