@@ -1,0 +1,17 @@
+.button__container{
+  display: flex;
+  justify-content: right;
+}
+
+.button__create {
+  background-color: var(--gray-600);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: black;
+}
