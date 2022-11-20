@@ -1,9 +1,4 @@
-export function select({
-  id,
-  name,
-  required = false,
-  selected = "Family"
-}) {
+export function select({ id, name, required = false, selected = "Family" }) {
   return `
     <div class="select">
       <div class="select__container">
@@ -12,10 +7,18 @@ export function select({
           id="${id}"
           class="select__content"
         >
-          <option value="Family" ${selected === "Family" ? "selected" : ""}>Family</option>
-          <option value="Friend" ${selected === "Friend" ? "selected" : ""}>Friend</option>
-          <option value="Work" ${selected === "Work" ? "selected" : ""}>Work</option>
-          <option value="Aquaintance" ${selected === "Aquaintance" ? "selected" : ""}>Aquaintance</option>
+          <option value="Family" ${
+            selected === "Family" ? "selected" : ""
+          }>Family</option>
+          <option value="Friend" ${
+            selected === "Friend" ? "selected" : ""
+          }>Friend</option>
+          <option value="Works" ${
+            selected === "Works" ? "selected" : ""
+          }>Works</option>
+          <option value="Acquaintance" ${
+            selected === "Acquaintance" ? "selected" : ""
+          }>Acquaintance</option>
         </select>
       </div>
     </div>

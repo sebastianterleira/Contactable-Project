@@ -13,33 +13,45 @@ function render() {
   <h1>Create new Contact</h1>
     <form class="flex flex-column gap-4 mb-4 js-profile-form">
       ${input({
-        id:"name",
+        id: "name",
         placeholder: "Name",
         required: true,
         value: name,
         name: "name",
       })}
-      ${formError.name ? `<p class="error-300">${formError.name.join(", ")}</p>` : ""}
+      ${
+        formError.name
+          ? `<p class="error-300">${formError.name.join(", ")}</p>`
+          : ""
+      }
       ${input({
-        id:"number",
+        id: "number",
         placeholder: "Number",
         value: number,
         name: "number",
       })}
-      ${formError.number ? `<p class="error-300">${formError.number.join(", ")}</p>` : ""}
+      ${
+        formError.number
+          ? `<p class="error-300">${formError.number.join(", ")}</p>`
+          : ""
+      }
       ${input({
-        id:"email",
+        id: "email",
         placeholder: "Email",
         type: "email",
         required: true,
         value: email,
         name: "email",
       })}
-      ${formError.email ? `<p class="error-300">${formError.email.join(", ")}</p>` : ""}
+      ${
+        formError.email
+          ? `<p class="error-300">${formError.email.join(", ")}</p>`
+          : ""
+      }
       ${select({
-        id:"relation",
+        id: "relation",
         name: relation,
-        selected: relation
+        selected: relation,
       })}
       
     
@@ -55,12 +67,12 @@ function listenSubmit() {
 
   cancel.addEventListener("click", async (event) => {
     DOMHandler.load(HomePage);
+    STORE.edit = {};
   });
 
   save.addEventListener("click", async (event) => {
+    const { name, number, email, relation } = event.target.parentNode;
 
-    const { name, number, email, relation } = event.target.parentNode
-    
     const data = {
       name: name.value,
       number: number.value,
@@ -68,29 +80,31 @@ function listenSubmit() {
       relation: relation.value,
     };
 
-    try{
-      let newC
-      if(STORE.edit.id){
-        console.log(data, STORE.edit.id)
-        await editContact(data, STORE.edit.id)
-        data.id = STORE.edit.id
+    try {
+      let newC;
+      if (STORE.edit.id) {
+        console.log(data, STORE.edit.id);
+        await editContact(data, STORE.edit.id);
+        data.id = STORE.edit.id;
 
-        let editableIndex = STORE.contacts.findIndex((item) => item.id === STORE.edit.id)
-        
+        let editableIndex = STORE.contacts.findIndex(
+          (item) => item.id === STORE.edit.id
+        );
+
         console.log(editableIndex);
         STORE.contacts.splice(editableIndex, 1, data);
-      }else{
-        newC = await createContacts(data)
+      } else {
+        newC = await createContacts(data);
         data.id = newC.id;
         STORE.contacts.push(data);
       }
-      
-      DOMHandler.load(HomePage);
-    }catch(error){
-      console.log(error)
-      DOMHandler.reload();
-    } 
 
+      DOMHandler.load(HomePage);
+      STORE.edit = {};
+    } catch (error) {
+      console.log(error);
+      DOMHandler.reload();
+    }
 
     // try {
     //   const user = await editContact(data);
