@@ -71,7 +71,8 @@ function listenSubmit() {
       if(STORE.edit.id){
         console.log(data, STORE.edit.id)
         await editContact(data, STORE.edit.id)
-        let editable = STORE.contacts.find(id === STORE.edit.id)
+        console.log(STORE.contacts)
+        let editable = STORE.contacts.find((item) => {item.id === STORE.edit.id})
         console.log(editable);
       }else{
         newC = await createContacts(data)
@@ -82,7 +83,8 @@ function listenSubmit() {
       console.log("loader home")
       DOMHandler.load(HomePage);
     }catch(error){
-      NewContact.state.formError = error;
+      console.log(error)
+      // NewContact.state.formError = error;
       // NewContact.state.formError = JSON.parse(error.message);
       DOMHandler.reload();
     } 
