@@ -1,6 +1,8 @@
 import DOMHandler from "../dom-handler.js";
 import NewContact from "./new-contact-page.js";
 import STORE from "../store.js";
+import LoginPage from "./login-page.js";
+import { logout } from "../services/sessions-service.js";
 import { updateFavoriteContact } from "../services/contacts-service.js";
 
 function contactType(param) {
@@ -21,8 +23,8 @@ function renderContact(contact) {
 function render() {
   console.log(STORE.contacts);
   return `
-      <div>
-        <h1 class="pb-1">Contactable</h1>
+        <h1>Contactable</h1>
+        <a class="text-center block mb-8 js-logout">Logout</a>
         ${
           contactType(true).length > 0
             ? `<b>FAVORITES</b>
@@ -114,11 +116,27 @@ function toggleFavorite(id) {
   return isFavorite;
 }
 
+function listenLogout() {
+  const a = document.querySelector(".js-logout");
+
+  a.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    try {
+      await logout();
+      DOMHandler.load(LoginPage);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
+
 const HomePage = {
   toString() {
     return render();
   },
   addListeners() {
+    listenLogout();
     listenAddContact();
     listenContacts();
     listenNoFavorite();
