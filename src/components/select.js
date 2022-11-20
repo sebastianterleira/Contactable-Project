@@ -13,9 +13,9 @@ export function select({ id, name, required = false, selected = "Family" }) {
           <option value="Friend" ${
             selected === "Friend" ? "selected" : ""
           }>Friend</option>
-          <option value="Works" ${
-            selected === "Works" ? "selected" : ""
-          }>Works</option>
+          <option value="Work" ${
+            selected === "Work" ? "selected" : ""
+          }>Work</option>
           <option value="Acquaintance" ${
             selected === "Acquaintance" ? "selected" : ""
           }>Acquaintance</option>
