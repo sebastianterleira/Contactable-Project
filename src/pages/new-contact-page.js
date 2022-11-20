@@ -57,7 +57,7 @@ function listenSubmit() {
 
     const { name, number, email, relation } = event.target.parentNode
 
-    console.dir(relation.value);
+
     
     const data = {
       name: name.value,
@@ -67,14 +67,23 @@ function listenSubmit() {
     };
 
     try{
-      if(STORE.edit){
+      let newC
+      if(STORE.edit.id){
+        console.log(data, STORE.edit.id)
         await editContact(data, STORE.edit.id)
+        let editable = STORE.contacts.find(id === STORE.edit.id)
+        console.log(editable);
       }else{
-        await createContacts(data)
+        newC = await createContacts(data)
+        data.id = newC.id;
       }
+      STORE.contacts.push(data);
+      
+      console.log("loader home")
       DOMHandler.load(HomePage);
     }catch(error){
-      NewContact.state.formError = JSON.parse(error.message);
+      NewContact.state.formError = error;
+      // NewContact.state.formError = JSON.parse(error.message);
       DOMHandler.reload();
     } 
 

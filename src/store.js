@@ -59,7 +59,7 @@ async function fetchContacts() {
 const STORE = {
   user: null,
   contacts: [],
-  edit: null,
+  edit: {},
   fetchContacts,
 };
 

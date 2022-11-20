@@ -18,7 +18,6 @@ export async function editContact(
   data = { name, number, email, relation, favorite: false },
   id
 ) {
-  console.log(data, id);
   const { token, ...user } = await apiFetch(`contacts/${id}`, {
     method: "PATCH",
     body: data,
@@ -28,7 +27,6 @@ export async function editContact(
 }
 
 export async function updateFavoriteContact(id, favorite) {
-  console.log(favorite);
   return await apiFetch(`contacts/${id}`, {
     method: "PATCH",
     body: { favorite: favorite },

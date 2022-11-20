@@ -21,7 +21,6 @@ function renderContact(contact) {
 }
 
 function render() {
-  console.log(STORE.contacts);
   return `
         <h1>Contactable</h1>
         <a class="text-center block mb-8 js-logout">Logout</a>
@@ -58,10 +57,8 @@ function listenContacts() {
       const editLink = event.target.closest("[data-id]");
       if (!editLink) return;
       const id = Number(editLink.dataset.id);
-      console.log(id);
 
       const contact = STORE.contacts.find((item) => item.id === id);
-      console.log(contact);
 
       STORE.edit = contact;
       DOMHandler.load(NewContact);
@@ -78,7 +75,6 @@ function listenFavorite() {
       if (!favoriteLink) return;
 
       const id = favoriteLink.dataset.favorite;
-      console.log(id);
       await updateFavoriteContact(id, toggleFavorite(id));
       STORE.contacts.find((a) => a.id == id).favorite = toggleFavorite(id);
 
