@@ -11,9 +11,9 @@ function renderContact(contact) {
   return `
       <li class = "js-contact" >
         <a data-id=${contact.id} >${contact.name}</a>
-        <a data-favorite=${contact.id} style="background-color:${
-    contact.favorite === true ? "green" : "red"
-  }">icono</a>
+        <i data-favorite=${contact.id} class="ri-star-${
+    contact.favorite === true ? "fill" : "line"
+  }"></i>
       </li>
       `;
 }
@@ -21,7 +21,8 @@ function renderContact(contact) {
 function render() {
   console.log(STORE.contacts);
   return `
-        <h1>Contactable</h1>
+      <div>
+        <h1 class="pb-1">Contactable</h1>
         ${
           contactType(true).length > 0
             ? `<b>FAVORITES</b>
@@ -33,8 +34,11 @@ function render() {
         <b>CONTACTS (${STORE.contacts.length})</b>
         <ul class="js-contact-list">
             ${STORE.contacts.map(renderContact).join("")}
-        </u>
-        <a class = "js-add-contact" href = "#">niu contact</a>`;
+        </ul>
+        </div>
+        <div class="button__container">
+          <a class = "button__create js-add-contact" href = "#">+</a>
+        </div>`;
 }
 
 function listenAddContact() {
