@@ -53,11 +53,13 @@ function listenSubmit() {
   const save = document.querySelector(".js-save-form");
   const cancel = document.querySelector(".js-cancel-form");
 
+  cancel.addEventListener("click", async (event) => {
+    DOMHandler.load(HomePage);
+  });
+
   save.addEventListener("click", async (event) => {
 
     const { name, number, email, relation } = event.target.parentNode
-
-
     
     const data = {
       name: name.value,
@@ -71,21 +73,21 @@ function listenSubmit() {
       if(STORE.edit.id){
         console.log(data, STORE.edit.id)
         await editContact(data, STORE.edit.id)
-        console.log(STORE.contacts)
-        let editable = STORE.contacts.find((item) => {item.id === STORE.edit.id})
-        console.log(editable);
+        data.id = STORE.edit.id
+
+        let editableIndex = STORE.contacts.findIndex((item) => item.id === STORE.edit.id)
+        
+        console.log(editableIndex);
+        STORE.contacts.splice(editableIndex, 1, data);
       }else{
         newC = await createContacts(data)
         data.id = newC.id;
+        STORE.contacts.push(data);
       }
-      STORE.contacts.push(data);
       
-      console.log("loader home")
       DOMHandler.load(HomePage);
     }catch(error){
       console.log(error)
-      // NewContact.state.formError = error;
-      // NewContact.state.formError = JSON.parse(error.message);
       DOMHandler.reload();
     } 
 
