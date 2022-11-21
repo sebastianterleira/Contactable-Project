@@ -1,15 +1,18 @@
 import STORE from "../store.js";
 import DOMHandler from "../dom-handler.js";
+import Header from "./layout/header.js";
+import LoginPage from "./login-page.js";
+import { logout } from "../services/sessions-service.js";
 import HomePage from "./home-page.js";
-import { input } from "../components/input.js";
-import { select } from "../components/select.js";
-import { createContacts, editContact } from "../services/contacts-service.js";
 
 function render() {
-  const { name, number, email, favorite, relation } = STORE.details;
+  const { id, name, number, email, favorite, relation } = STORE.details;
   const { formError } = ContactDetails.state;
+
+  const title = "Contact Details";
+  STORE.header = { title };
   return `
-    <h1>Contact Details</h1>
+    ${Header}
     <div class="contact__details">
         <img src="./assets/empty.png" alt="" class="contact__details-img" />
       <div>${name}</div>
@@ -19,46 +22,19 @@ function render() {
       <div>Email: ${email}</div>
 
     </div>
+
+    <div class="contactable__actions js-contacts">
+      <a class="contactable__back">Back</a>
+      <a class="js-add-contact contactable__edit" data-id=${id}>Edit</a>
+    </div>
     `;
 }
 
-function listenSubmit() {
-  // const save = document.querySelector(".js-save-form");
-  // const cancel = document.querySelector(".js-cancel-form");
-  // cancel.addEventListener("click", async (event) => {
-  //   DOMHandler.load(HomePage);
-  //   STORE.edit = {};
-  // });
-  // save.addEventListener("click", async (event) => {
-  //   const { name, number, email, favorite, relation } = event.target.parentNode;
-  //   const data = {
-  //     name: name.value,
-  //     number: number.value,
-  //     email: email.value,
-  //     favorite: JSON.parse(favorite.value),
-  //     relation: relation.value,
-  //   };
-  //   try {
-  //     let newC;
-  //     if (STORE.edit.id) {
-  //       await editContact(data, STORE.edit.id);
-  //       data.id = STORE.edit.id;
-  //       let editableIndex = STORE.contacts.findIndex(
-  //         (item) => item.id === STORE.edit.id
-  //       );
-  //       STORE.contacts.splice(editableIndex, 1, data);
-  //     } else {
-  //       newC = await createContacts(data);
-  //       data.id = newC.id;
-  //       STORE.contacts.push(data);
-  //     }
-  //     DOMHandler.load(HomePage);
-  //     STORE.edit = {};
-  //   } catch (error) {
-  //     console.log(error);
-  //     DOMHandler.reload();
-  //   }
-  // });
+function listenBack() {
+  const back = document.querySelector(".contactable__back");
+  back.addEventListener("click", async () => {
+    DOMHandler.load(HomePage);
+  });
 }
 
 const ContactDetails = {
@@ -66,7 +42,9 @@ const ContactDetails = {
     return render();
   },
   addListeners() {
-    listenSubmit();
+    STORE.listenLogout();
+    listenBack();
+    STORE.listenContacts();
   },
   state: {
     formError: false,

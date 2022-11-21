@@ -1,6 +1,5 @@
 const DOMHandler = (function (parentSelector) {
   const parent = document.querySelector(parentSelector);
-
   if (!parent) throw new Error("Parent not found");
 
   return {

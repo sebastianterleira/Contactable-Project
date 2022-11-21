@@ -16,7 +16,7 @@ async function init() {
     await STORE.fetchContacts();
     // STORE.contacts = await STORE.fetchContacts();
 
-    DOMHandler.load(Header);
+    DOMHandler.load(HomePage);
   } catch (error) {
     sessionStorage.removeItem(tokenKey);
     DOMHandler.load(LoginPage);

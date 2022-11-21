@@ -5,6 +5,8 @@ import { input } from "../components/input.js";
 import { select } from "../components/select.js";
 import { createContacts, editContact } from "../services/contacts-service.js";
 import Header from "./layout/header.js";
+import LoginPage from "./login-page.js";
+import { logout } from "../services/sessions-service.js";
 
 function render() {
   const { name, number, email, favorite, relation } = STORE.edit;
@@ -64,66 +66,11 @@ function render() {
         selected: relation,
       })}
       
-        <a class="js-cancel-form" href = "#">Cancel</a>
-        <a class="js-save-form" href = "#">Save</a>
+        <div class="contactable__actions">
+          <a class="js-cancel-form" href = "#">Cancel</a>
+          <a class="js-save-form" href = "#">Save</a>
+        </div>
       </form>`;
-}
-
-function listenSubmit() {
-  const save = document.querySelector(".js-save-form");
-  const cancel = document.querySelector(".js-cancel-form");
-
-  cancel.addEventListener("click", async (event) => {
-    DOMHandler.load(HomePage);
-    STORE.edit = {};
-  });
-
-  save.addEventListener("click", async (event) => {
-    const { name, number, email, favorite, relation } = event.target.parentNode;
-
-    const data = {
-      name: name.value,
-      number: number.value,
-      email: email.value,
-      favorite: JSON.parse(favorite.value),
-      relation: relation.value,
-    };
-
-    try {
-      let newC;
-      if (STORE.edit.id) {
-        await editContact(data, STORE.edit.id);
-        data.id = STORE.edit.id;
-
-        let editableIndex = STORE.contacts.findIndex(
-          (item) => item.id === STORE.edit.id
-        );
-
-        STORE.contacts.splice(editableIndex, 1, data);
-      } else {
-        newC = await createContacts(data);
-        data.id = newC.id;
-        STORE.contacts.push(data);
-      }
-
-      DOMHandler.load(HomePage);
-      STORE.edit = {};
-    } catch (error) {
-      console.log(error);
-      DOMHandler.reload();
-    }
-
-    // try {
-    //   const user = await editContact(data);
-
-    //   STORE.user = user;
-    //   STORE.currentTab = "expense";
-    //   DOMHandler.reload();
-    // } catch (error) {
-    //   Form.state.formError = error.message;
-    //   DOMHandler.reload();
-    // }
-  });
 }
 
 const NewContact = {
@@ -131,7 +78,8 @@ const NewContact = {
     return render();
   },
   addListeners() {
-    listenSubmit();
+    STORE.listenSubmit();
+    STORE.listenLogout();
   },
   state: {
     formError: false,
