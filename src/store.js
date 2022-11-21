@@ -60,6 +60,8 @@ const STORE = {
   user: null,
   contacts: [],
   edit: {},
+  details: {},
+  header: {},
   fetchContacts,
 };
 

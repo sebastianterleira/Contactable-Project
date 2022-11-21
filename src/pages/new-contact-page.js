@@ -4,13 +4,17 @@ import HomePage from "./home-page.js";
 import { input } from "../components/input.js";
 import { select } from "../components/select.js";
 import { createContacts, editContact } from "../services/contacts-service.js";
+import Header from "./layout/header.js";
 
 function render() {
-  const { name, number, email, relation } = STORE.edit;
+  const { name, number, email, favorite, relation } = STORE.edit;
   const { formError } = NewContact.state;
 
+  const title = `${STORE.edit.id ? "Edit" : "Create new"} contact`;
+  STORE.header = { title };
+
   return `
-  <h1>Create new Contact</h1>
+    ${Header}
     <form class="flex flex-column gap-4 mb-4 js-profile-form">
       ${input({
         id: "name",
@@ -43,6 +47,12 @@ function render() {
         value: email,
         name: "email",
       })}
+      ${input({
+        id: "favorite",
+        value: favorite ? favorite : "false",
+        name: "favorite",
+        classes: "hide",
+      })}
       ${
         formError.email
           ? `<p class="error-300">${formError.email.join(", ")}</p>`
@@ -54,11 +64,9 @@ function render() {
         selected: relation,
       })}
       
-    
-      <a class = "js-cancel-form" href = "#">Cancel</a>
-      <a class = "js-save-form" href = "#">Save</a>
-      </form>
-  `;
+        <a class="js-cancel-form" href = "#">Cancel</a>
+        <a class="js-save-form" href = "#">Save</a>
+      </form>`;
 }
 
 function listenSubmit() {
@@ -71,19 +79,19 @@ function listenSubmit() {
   });
 
   save.addEventListener("click", async (event) => {
-    const { name, number, email, relation } = event.target.parentNode;
+    const { name, number, email, favorite, relation } = event.target.parentNode;
 
     const data = {
       name: name.value,
       number: number.value,
       email: email.value,
+      favorite: JSON.parse(favorite.value),
       relation: relation.value,
     };
 
     try {
       let newC;
       if (STORE.edit.id) {
-        console.log(data, STORE.edit.id);
         await editContact(data, STORE.edit.id);
         data.id = STORE.edit.id;
 
@@ -91,7 +99,6 @@ function listenSubmit() {
           (item) => item.id === STORE.edit.id
         );
 
-        console.log(editableIndex);
         STORE.contacts.splice(editableIndex, 1, data);
       } else {
         newC = await createContacts(data);

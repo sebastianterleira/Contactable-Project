@@ -12,13 +12,11 @@ async function init() {
     if (!token) throw new Error();
 
     const user = await getContacts();
-    console.log(user);
 
     await STORE.fetchContacts();
     // STORE.contacts = await STORE.fetchContacts();
 
-
-    DOMHandler.load(HomePage);
+    DOMHandler.load(Header);
   } catch (error) {
     sessionStorage.removeItem(tokenKey);
     DOMHandler.load(LoginPage);
