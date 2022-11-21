@@ -2,8 +2,10 @@ import DOMHandler from "../dom-handler.js";
 import NewContact from "./new-contact-page.js";
 import STORE from "../store.js";
 import LoginPage from "./login-page.js";
-import { logout } from "../services/sessions-service.js";
 import { updateFavoriteContact } from "../services/contacts-service.js";
+import ContactDetails from "./contact-details-page.js";
+import Header from "./layout/header.js";
+import { logout } from "../services/sessions-service.js";
 
 function contactType(param) {
   return STORE.contacts.filter((contact) => contact.favorite === param);
@@ -12,7 +14,12 @@ function contactType(param) {
 function renderContact(contact) {
   return `
       <li class = "js-contact" >
-        <a data-id=${contact.id} >${contact.name}</a>
+        <div class="contactable__info">
+          <span data-details=${
+            contact.id
+          } ><img src="./assets/empty.png" alt="" /></span>
+          <a data-id=${contact.id}>${contact.name}</a>
+        </div>
         <i data-favorite=${contact.id} class="ri-star-${
     contact.favorite === true ? "fill" : "line"
   }"></i>
@@ -21,47 +28,42 @@ function renderContact(contact) {
 }
 
 function render() {
+  const title = "Contactable";
+  STORE.header = { title };
+
   return `
-        <h1>Contactable</h1>
-        <a class="text-center block mb-8 js-logout">Logout</a>
-        ${
-          contactType(true).length > 0
-            ? `<b>FAVORITES</b>
-            <ul class="js-contact-lists">
-              ${contactType(true).map(renderContact).join("")}</ul >`
-            : ""
-        }
-        <br>
-        <b>CONTACTS (${STORE.contacts.length})</b>
-        <ul class="js-contact-list">
-            ${STORE.contacts.map(renderContact).join("")}
-        </ul>
-        </div>
-        <div class="button__container">
-          <a class = "button__create js-add-contact" href = "#">+</a>
-        </div>`;
+    ${Header}
+    <div class="js-contacts js-contact-details">
+    ${
+      contactType(true).length > 0
+        ? `<b>FAVORITES</b>
+        <ul class="js-contact-lists">
+          ${contactType(true).map(renderContact).join("")}</ul >`
+        : ""
+    }
+    <b>CONTACTS (${STORE.contacts.length})</b>
+    <ul class="js-contact-list">
+        ${STORE.contacts.map(renderContact).join("")}
+    </ul>
+    </div>
+    
+    <div class="button__container">
+      <a class = "button__create js-add-contact" href = "#">+</a>
+    </div>`;
 }
 
-function listenAddContact() {
-  const a = document.querySelector(".js-add-contact");
-  a.addEventListener("click", async (event) => {
-    DOMHandler.load(NewContact);
-  });
-}
-
-function listenContacts() {
-  const ul = document.querySelector(".js-contact-list");
+function listenContactDetails() {
+  const ul = document.querySelector(".js-contact-details ");
   ul &&
     ul.addEventListener("click", async (event) => {
       event.preventDefault();
-      const editLink = event.target.closest("[data-id]");
+      const editLink = event.target.closest("[data-details]");
       if (!editLink) return;
-      const id = Number(editLink.dataset.id);
-
+      const id = Number(editLink.dataset.details);
       const contact = STORE.contacts.find((item) => item.id === id);
+      STORE.details = contact;
 
-      STORE.edit = contact;
-      DOMHandler.load(NewContact);
+      DOMHandler.load(ContactDetails);
     });
 }
 
@@ -112,31 +114,17 @@ function toggleFavorite(id) {
   return isFavorite;
 }
 
-function listenLogout() {
-  const a = document.querySelector(".js-logout");
-
-  a.addEventListener("click", async (event) => {
-    event.preventDefault();
-
-    try {
-      await logout();
-      DOMHandler.load(LoginPage);
-    } catch (error) {
-      console.log(error);
-    }
-  });
-}
-
 const HomePage = {
   toString() {
     return render();
   },
   addListeners() {
-    listenLogout();
-    listenAddContact();
-    listenContacts();
+    STORE.listenAddContact();
+    STORE.listenContacts();
     listenNoFavorite();
     listenFavorite();
+    listenContactDetails();
+    STORE.listenLogout();
   },
 };
 

@@ -3,6 +3,7 @@ import HomePage from "./home-page.js";
 import STORE from "../store.js";
 import { input } from "../components/input.js";
 import { login } from "../services/sessions-service.js";
+import Header from "./layout/header.js";
 
 function render() {
   const { loginError } = this.state;
@@ -19,7 +20,7 @@ function render() {
           placeholder: "nando@example.com",
           type: "email",
           required: true,
-          value: "alfredo@mail.com",
+          value: "alfredo2@mail.com",
         })}
 
 				${input({
