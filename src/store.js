@@ -116,7 +116,8 @@ function listenSubmit() {
       DOMHandler.load(HomePage);
       STORE.edit = {};
     } catch (error) {
-      console.log(error);
+      const errorName = JSON.parse(error.message).errors?.toString();
+      if (errorName === "Access denied") DOMHandler.load(LoginPage);
       DOMHandler.reload();
     }
   });
