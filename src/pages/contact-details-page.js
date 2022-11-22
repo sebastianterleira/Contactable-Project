@@ -4,6 +4,7 @@ import Header from "./layout/header.js";
 import LoginPage from "./login-page.js";
 import { logout } from "../services/sessions-service.js";
 import HomePage from "./home-page.js";
+import { deleteContact } from "../services/contacts-service.js";
 
 function render() {
   const { id, name, number, email, favorite, relation } = STORE.details;
@@ -23,9 +24,10 @@ function render() {
 
     </div>
 
-    <div class="contactable__actions js-contacts">
+    <div class="contactable__actions ">
       <a class="contactable__back">Back</a>
-      <a class="js-add-contact contactable__edit" data-id=${id}>Edit</a>
+      <a class="contactable__delete" data-id=${id}>Delete</a>
+      <a class="js-add-contact contactable__edit js-contacts" data-id=${id}>Edit</a>
     </div>
     `;
 }
@@ -37,14 +39,34 @@ function listenBack() {
   });
 }
 
+function listenDelete() {
+  const contact = document.querySelector(".contactable__delete");
+
+  contact.addEventListener("click", async (event) => {
+    event.preventDefault();
+    const eraseContact = event.target.closest("[data-id]");
+    if (!eraseContact) return;
+
+    const id = eraseContact.dataset.id;
+
+    const contacts = STORE.contacts.filter((item) => item.id != id);
+    STORE.contacts = contacts;
+
+    await deleteContact(id);
+
+    DOMHandler.load(HomePage);
+  });
+}
+
 const ContactDetails = {
   toString() {
     return render();
   },
   addListeners() {
     STORE.listenLogout();
-    listenBack();
     STORE.listenContacts();
+    listenBack();
+    listenDelete();
   },
   state: {
     formError: false,

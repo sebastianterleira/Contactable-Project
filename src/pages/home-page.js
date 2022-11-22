@@ -7,9 +7,8 @@ import ContactDetails from "./contact-details-page.js";
 import Header from "./layout/header.js";
 import { logout } from "../services/sessions-service.js";
 
-function contactType(param) {
-  return STORE.contacts.filter((contact) => contact.favorite === param);
-}
+let contactType = (param) =>
+  STORE.contacts.filter((contact) => contact.favorite === param);
 
 function renderContact(contact) {
   return `
