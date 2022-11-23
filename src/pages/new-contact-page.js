@@ -19,6 +19,7 @@ function render() {
     ${Header}
     <form class="flex flex-column gap-4 mb-4 js-profile-form">
       ${input({
+        label: "name",
         id: "name",
         placeholder: "Name",
         required: true,
@@ -31,6 +32,7 @@ function render() {
           : ""
       }
       ${input({
+        label: "number",
         id: "number",
         placeholder: "Number",
         value: number,
@@ -42,6 +44,7 @@ function render() {
           : ""
       }
       ${input({
+        label: "email",
         id: "email",
         placeholder: "Email",
         type: "email",
@@ -50,6 +53,7 @@ function render() {
         name: "email",
       })}
       ${input({
+        label: "favorite",
         id: "favorite",
         value: favorite ? favorite : "false",
         name: "favorite",

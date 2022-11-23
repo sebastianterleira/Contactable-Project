@@ -4,6 +4,7 @@ import STORE from "../store.js";
 import { input } from "../components/input.js";
 import { login } from "../services/sessions-service.js";
 import Header from "./layout/header.js";
+import CreateUser from "./sing-up.js";
 
 function render() {
   const { loginError } = this.state;
@@ -60,7 +61,6 @@ function ListenSubmitForm() {
       STORE.user = user;
 
       await STORE.fetchContacts();
-      // STORE.contacts = await STORE.fetchContacts();
 
       DOMHandler.load(HomePage);
     } catch (error) {
@@ -70,12 +70,21 @@ function ListenSubmitForm() {
   });
 }
 
+function listenSingUp() {
+	const a = document.querySelector(".js-signup-link");
+
+  a.addEventListener("click", async (event) => {
+    DOMHandler.load(CreateUser);
+  });
+}
+
 const LoginPage = {
   toString() {
     return render.call(this);
   },
   addListeners() {
     ListenSubmitForm.call(this);
+    listenSingUp();
   },
   state: {
     loginError: null,
