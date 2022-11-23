@@ -1,5 +1,6 @@
 export function input({
   id,
+  label,
   name,
   placeholder = "",
   type,
@@ -9,6 +10,7 @@ export function input({
 }) {
   return `
 	<div class="input ${classes}">
+	<label for="${id}" class="overline">${label}</label>
 			<div class="input__container">
 				<input 
 					type="${type ? type : "text"}"
