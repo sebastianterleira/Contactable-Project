@@ -144,4 +144,3 @@ favorite
 - Then the favorite mark is removed from the contact
 - And it is removed from the Favorites list
 
-HAPPY CODING! 👨‍💻 👨‍💻
