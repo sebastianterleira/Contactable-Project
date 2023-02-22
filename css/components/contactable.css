@@ -1,0 +1,77 @@
+.button__container{
+  display: flex;
+  justify-content: right;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button__create {
+  background-color: var(--gray-600);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: black;
+}
+
+.contactable__info{
+  display: flex;
+}
+
+.js-contact{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.contactable__info img{
+  width: 32px;
+  height: 32px;
+  border-radius: 1rem;
+}
+
+.contactable__info img{
+  margin-right: 1rem;
+}
+
+.js-contact-list,
+.js-contact-lists{
+  padding: 0;
+}
+
+.hide{
+  display: none;
+}
+
+.head{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
+
+.contact__details-img{
+  width: 72px;
+  border-radius: 3rem;
+}
+
+.contact__details{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contactable__actions{
+  display: flex;
+  justify-content: right;
+}
+
+.contactable__delete,
+.contactable__back,
+.js-cancel-form{
+  margin-right: 1rem;
+}
